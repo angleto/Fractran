@@ -8,7 +8,7 @@ To run the program:
 Example:
 
 ```bash
-Bash %> scala Fractran.scala 72 "455/33,11/13,1/11,3/7,11/2,1/3"`
+Bash %> scala Fractran.scala 72 "455/33,11/13,1/11,3/7,11/2,1/3"
 72
 396
 5460
