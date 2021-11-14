@@ -8,6 +8,12 @@ This is a simple implementation of a [Fractran](https://en.wikipedia.org/wiki/FR
 
 `scala Fractran.scala <number> "<fractions>"`
 
+the number can be also expressed as a power, for example: "2^3,3^4,2"
+
+then:
+scala Fractran.scala "2^3,3^4,2" "455/33,11/13,1/11,3/7,11/2,1/3"
+
+
 Example:
 
 ```bash
