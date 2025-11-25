@@ -104,6 +104,31 @@ sbt assembly
 java -jar target/scala-2.13/fractran.jar 72 "455/33,11/13,1/11,3/7,11/2,1/3"
 ```
 
+### Using the Scala REPL
+
+You can also use the library interactively in the Scala REPL:
+
+```bash
+# Start REPL with the JAR
+scala -cp target/scala-2.13/fractran.jar
+```
+
+Then in the REPL:
+
+```scala
+import io.github.angleto.fractran._
+
+// Run the addition program: 2^3 * 3^4 -> 2^7
+val n = Fract(BigInt(648))  // 2^3 * 3^4
+val fractions = LazyList(Fract("2/3"))
+Fractran(n, fractions).map(_.div).toList
+// List(648, 432, 288, 192, 128)
+
+// Take first 10 results from a longer computation
+val program = LazyList(Fract("455/33"), Fract("11/13"), Fract("1/11"), Fract("3/7"), Fract("11/2"), Fract("1/3"))
+Fractran(Fract(72), program).take(10).map(_.div).toList
+```
+
 ## Project Structure
 
 ```
