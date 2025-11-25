@@ -70,6 +70,33 @@ This computes `2^3 × 3^4 × 2 = 1296` as the starting value.
 ...
 ```
 
+### Progress Mode
+
+For long-running computations, use `--progress` to see live updates showing the last 3 checkpoints with timestamp, step count, steps/second, and current value:
+
+```bash
+sbt "run 2^3,3^4,2 455/33,11/13,1/11,3/7,11/2,1/3 --progress"
+```
+
+You can customize the checkpoint interval (default 10000 steps):
+
+```bash
+sbt "run 2^3,3^4,2 455/33,11/13,1/11,3/7,11/2,1/3 --progress=5000"
+```
+
+**Progress output:**
+
+```
+FRACTRAN Progress
+============================================================
+
+Time               Step      Steps/s   Value
+------------------------------------------------------------
+10:45:12         10,000     125000.0   8421875
+10:45:13         20,000     142857.1   765625
+10:45:14         30,000     138888.9   15625
+```
+
 ### Building a JAR
 
 ```bash
