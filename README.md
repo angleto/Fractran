@@ -1,23 +1,63 @@
 # Fractran
 
-This is a simple implementation of a [Fractran](https://en.wikipedia.org/wiki/FRACTRAN) interpreter in scala
+[![Scala](https://img.shields.io/badge/Scala-2.13-red.svg)](https://www.scala-lang.org/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-# Run the program
+A [FRACTRAN](https://en.wikipedia.org/wiki/FRACTRAN) interpreter implemented in Scala.
 
-## Using the scala interpreter
+## What is FRACTRAN?
 
-`scala Fractran.scala <number> "<fractions>"`
+FRACTRAN is a Turing-complete esoteric programming language invented by mathematician John Conway. A FRACTRAN program is an ordered list of fractions. The execution is remarkably simple:
 
-the number can be also expressed as a power, for example: "2^3,3^4,2"
+1. Start with an integer **n**
+2. Find the first fraction **f** in the list where **n × f** is an integer
+3. Replace **n** with **n × f** and repeat from step 2
+4. If no fraction produces an integer, the program halts
 
-then:
-scala Fractran.scala "2^3,3^4,2" "455/33,11/13,1/11,3/7,11/2,1/3"
+Despite its simplicity, FRACTRAN can compute anything a regular computer can.
 
+## Installation
 
-Example:
+### Prerequisites
+
+- [Scala](https://www.scala-lang.org/download/) 2.13+
+- [SBT](https://www.scala-sbt.org/download.html) 1.x
+
+### Build
 
 ```bash
-Bash %> scala Fractran.scala 72 "455/33,11/13,1/11,3/7,11/2,1/3"
+sbt compile
+```
+
+## Usage
+
+### Running with SBT
+
+```bash
+sbt "run <number> <fractions>"
+```
+
+### Examples
+
+**Simple execution:**
+
+```bash
+sbt "run 72 455/33,11/13,1/11,3/7,11/2,1/3"
+```
+
+**Using power notation for input:**
+
+The input number can be expressed as products of powers:
+
+```bash
+sbt "run 2^3,3^4,2 455/33,11/13,1/11,3/7,11/2,1/3"
+```
+
+This computes `2^3 × 3^4 × 2 = 1296` as the starting value.
+
+**Output:**
+
+```
 72
 396
 5460
@@ -27,61 +67,67 @@ Bash %> scala Fractran.scala 72 "455/33,11/13,1/11,3/7,11/2,1/3"
 4900
 2100
 900
-4950
-68250
-57750
-796250
-673750
-61250
-26250
-11250
-61875
-853125
-721875
-9953125
-8421875
-765625
-328125
-140625
-46875
-15625
+...
 ```
 
-## Compile and run the bytecode
-
-To compile the program:
-
-`scalac Fractran.scala`
-
-Run the bytecode:
+### Building a JAR
 
 ```bash
-Bash %> scala FractranCL 72 "455/33,11/13,1/11,3/7,11/2,1/3"
-72
-396
-5460
-4620
-63700
-53900
-4900
-2100
-900
-4950
-68250
-57750
-796250
-673750
-61250
-26250
-11250
-61875
-853125
-721875
-9953125
-8421875
-765625
-328125
-140625
-46875
-15625
+sbt assembly
+java -jar target/scala-2.13/fractran.jar 72 "455/33,11/13,1/11,3/7,11/2,1/3"
 ```
+
+## Project Structure
+
+```
+fractran/
+├── src/
+│   ├── main/scala/io/github/angleto/fractran/
+│   │   ├── Fract.scala            # Fraction representation
+│   │   ├── Fractran.scala         # Core interpreter
+│   │   ├── FractranException.scala
+│   │   └── Main.scala             # CLI entry point
+│   └── test/scala/                # Test files
+├── examples/                      # Example FRACTRAN programs
+├── build.sbt
+└── README.md
+```
+
+## How It Works
+
+The interpreter uses Scala's `LazyList` for efficient lazy evaluation, allowing it to handle potentially infinite computation sequences gracefully. The core algorithm:
+
+```scala
+def apply(n: Fract, fractions: LazyList[Fract]): LazyList[Fract] = {
+  def fractran(value: Fract): LazyList[Fract] = {
+    fractions.map(f => value * f)
+      .find(_.isInt) match {
+        case Some(t) => t #:: fractran(t)
+        case _       => LazyList.empty[Fract]
+      }
+  }
+  n #:: fractran(n)
+}
+```
+
+## Famous FRACTRAN Programs
+
+### Addition (2/3)
+
+Computes `2^a × 3^b → 2^(a+b)`:
+
+```bash
+sbt "run 2^3,3^4 2/3"
+```
+
+### Primality Testing
+
+Conway's original FRACTRAN program that generates prime numbers (the PRIMEGAME).
+
+## License
+
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+Angelo Leto ([@angleto](https://github.com/angleto))

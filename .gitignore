@@ -1,2 +1,47 @@
+# Scala/SBT
 *.class
 *.log
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+target/
+out/
+
+# SBT
+.bsp/
+project/target/
+project/project/
+.metals/
+.bloop/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Old/archived source files
+*.scala.old
+*.scala.bak
+Fractran.*.scala
