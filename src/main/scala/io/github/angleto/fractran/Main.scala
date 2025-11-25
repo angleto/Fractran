@@ -33,7 +33,7 @@ object Main {
    * Parses input that may contain powers and products.
    * E.g., "2^3,3^4,2" becomes 2^3 * 3^4 * 2 = 1296
    */
-  private def parseInput(input: String): BigInt = {
+  private[fractran] def parseInput(input: String): BigInt = {
     input.replace(" ", "").split(",").map { v =>
       if (v.contains("^")) {
         val pow = v.split("\\^")
